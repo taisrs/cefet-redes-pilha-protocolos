@@ -17,6 +17,6 @@ do
 	#imprime o número de bytes do quadro recebido
 	echo $(echo $cmd | wc -c)
 	#redireciona o quadro para o arquivo especificado
-	echo $cmd | perl -lpe '$_=pack"B*",$_' > $1
+	echo $cmd | perl -lpe '$_=pack"B*",$_' | awk -F"########################################" '{ print $NF }' > $1
 done <&${COPROC[0]} >&${COPROC[1]}
 #a resposta está disponível para leitura através do descritor ${COPROC[0]}

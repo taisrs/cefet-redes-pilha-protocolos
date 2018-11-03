@@ -17,7 +17,7 @@ macDest=$(arp $1 | grep -o -m 1 "..:..:..:..:..:..");
 head=$(echo "Src: $macOrig, Dst: $macDest");
 
 #monta o quadro de envio
-frame=$(printf "$head ######################################## $payload");
+frame=$(printf "$head########################################$payload");
 
 #enquanto o número sorteado for maior ou igual a "x", considera uma colisão
 while true
