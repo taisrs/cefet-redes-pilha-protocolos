@@ -5,6 +5,8 @@ if [ $# -ne 2 ]; then
 	exit 1;
 fi
 
+sleep 1;
+
 #define número da porta
 PORT=3003;
 #carrega o payload
@@ -29,13 +31,13 @@ do
 	DIV=$((10+1));
 	R=$(($RANDOM%$DIV));
 	
-	if [ $R -ge 8 ]; then 
-    	echo "colision detected...";
+	if [ $R -ge 10 ]; then 
+    	###echo "colision detected...";
     	
     	DIV=$((10+1));
 		R=$(($RANDOM%$DIV));
 	
-		echo "waiting for $R seconds...";
+		###echo "waiting for $R seconds...";
 		
 		#aguarda de 0 a 10 segundos para reenviar o quadro 
 		sleep $R;
@@ -45,5 +47,5 @@ do
 	
 done
 
-echo "success!";
+###echo "success!"; 
 	
