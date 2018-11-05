@@ -60,8 +60,8 @@ while connection_state != "ESTABLISHED"
 	# executa script da camada física
 	response = `./client.sh #{ip} #{file}`
 
-	res_header = response.split(/\r?\n|\r/)[0]
-	res_payload = response.split(/\r?\n|\r/)[1..-1]
+	res_header = response.split(')()()(')[0]
+	res_payload = response.split(')()()(')[1..-1]
 
 	seq, ack, ctl = parse_header(res_header)
 

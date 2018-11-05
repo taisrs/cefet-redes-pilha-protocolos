@@ -67,7 +67,7 @@ loop {
 			current_ack = seq.to_i + 1
 
 			res_header = build_header(seq:current_seq.to_s, ack:current_ack.to_s, ctl:['SYN', 'ACK'])
-			file_lines = [res_header] + payload
+			file_lines = res_header << ')()()(' << payload
 
 			client.puts file_lines
 			client.close
@@ -87,16 +87,12 @@ loop {
 	write_file(file_name, payload)
 
 	s = TCPSocket.open(IP, PORT)
-	server_response = []
-
-	while line = s.gets
-		server_response << line
-	end
+	server_response = s.gets.chomp
 	s.close
 
 	current_seq = current_seq + 1
 	res_header = build_header(seq:current_seq.to_s, ack:nil, ctl:[])
-	file_lines = [res_header] + server_response
+	file_lines = res_header << ')()()(' << server_response
 
 	client.puts file_lines
 	client.close
