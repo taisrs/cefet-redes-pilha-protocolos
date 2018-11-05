@@ -64,7 +64,7 @@ app.get('/filedownload/:file', function (req, res, next) {
 	//===================================Aplicacao================================================
 	//============================================================================================
 
-	res.download('./downloads/'+file, file);
+	res.download('./downloads/' + file, file);
 });
 
 
