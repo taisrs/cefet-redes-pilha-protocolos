@@ -3,9 +3,11 @@
 ip = ARGV[0]
 file_name = ARGV[1]
 
-file = File.open(file_name, 'r+')
-request_lines = file.readlines
-file.close
+#file = File.open(file_name, 'r+')
+#request_lines = file.readlines
+#file.close
+file_content = File.read(file_name)
+
 
 def build_header(seq:nil, ack:nil, ctl:[])
 
@@ -35,6 +37,7 @@ def parse_header(header)
 end
 
 # escreve cada elemento de content_array como uma linha em file_name
+#aposto que nao vai usar mais; tais discorda
 def write_file(file_name, content_array)
 
 	output = File.new(file_name, 'w')
@@ -42,27 +45,24 @@ def write_file(file_name, content_array)
 	output.close
 end
 
-connection_state = File.read('client_connection.tcp')
+#connection_state = File.read('client_connection.tcp')
+connection_state = "LOST"
 
 current_seq = 100
 current_ack = nil
 
-if connection_state != "ESTABLISHED"
-
-	header = build_header(seq:current_seq.to_s, ack:nil, ctl:['SYN'])
-	file_lines = [header] + request_lines
-
-	write_file(file_name, file_lines)
-end
+#sabendo que a conexao nao esta estabelecida
+header = build_header(seq:current_seq.to_s, ack:nil, ctl:['SYN'])
+output = header + "###" + file_content
+File.write(file_name, output)
 
 while connection_state != "ESTABLISHED"
 
 	# executa script da camada física
 	response = `./client.sh #{ip} #{file_name}`
 
-	puts response
-	File.write('client_connection.tcp', 'ESTABLISHED')
-	connection_state = 'ESTABLISHED'
+	print response
+	connection_state = "ESTABLISHED"
 
 	# res_header = response.split(')()()(')[0]
 	# res_payload = response.split(')()()(')[1..-1]
@@ -92,15 +92,15 @@ end
 
 # executa uma vez que a conexao esteja estabelecida
 header = build_header(seq:current_seq.to_s, ack:current_ack.to_s, ctl:['ACK'])
-file_lines = [header] + request_lines
-
-write_file(file_name, file_lines)
+output = header + "###" + file_content
+File.write(file_name, output)
 
 # executa script da camada física
 response = `./client.sh #{ip} #{file_name}`
 
-res_header = response.split(')()()(')[0]
-res_payload = response.split(')()()(')[1..-1]
+#response manipulation
+res_header = response.split("###")[0]
+res_payload = response.split("###")[1..-1]
 
 # retorna via stdout a resposta
-puts res_payload
+print res_payload

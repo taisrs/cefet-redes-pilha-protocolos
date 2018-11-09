@@ -50,27 +50,33 @@ server = TCPServer.open(MYIP, MYPORT)
 current_seq = 300
 current_ack = nil
 
+connection_state = "ESTABLISHED"
+
 loop {
 
 	client = server.accept
 
-	header = File.open(file_name_in, &:readline) ### AQUI ESTÁ UM PROBLEMA: NÃO É O CABEÇALHO EM UMA LINHA E O PAYLOAD EM OUTRA
-	payload = File.readlines(file_name_in)[1..-1]
+	#header = File.open(file_name_in, &:readline) ### AQUI ESTÁ UM PROBLEMA: NÃO É O CABEÇALHO EM UMA LINHA E O PAYLOAD EM OUTRA
+	#payload = File.readlines(file_name_in)[1..-1]
+
+	file_content = File.read(file_name_in)
+	header = file_content.split("###")[0]
+	payload = file_content.split("###")[1..-1].join('')
 
 	seq, ack, ctl = parse_header(header)
 
-	connection_state = File.read('server_connection.tcp')
+	#connection_state = File.read('server_connection.tcp')
 
-	if connection_state != 'ESTABLISHED'
+	if connection_state != "ESTABLISHED"
 
 		if ctl.include? 'SYN'
 
 			current_ack = seq.to_i + 1
 
 			res_header = build_header(seq:current_seq.to_s, ack:current_ack.to_s, ctl:['SYN', 'ACK'])
-			file_lines = res_header << ')()()(' << payload
+			output = res_header + "###" + payload
 
-			client.puts file_lines
+			client.puts output
 			client.close
 
 		elsif ctl.include? 'ACK'
@@ -78,23 +84,54 @@ loop {
 			if ack.to_i == (current_seq + 1)
 
 				current_seq = current_seq + 1
+				connection_state = "ESTABLISHED"
 
-				File.write('server_connection.tcp', 'ESTABLISHED')
-				connection_state = 'ESTABLISHED'
+				File.write(file_name_out, payload)
+
+				s = TCPSocket.open(IP, PORT)
+				server_response = s.gets.chomp
+				s.close
+
+				res_header = build_header(seq:current_seq.to_s, ack:nil, ctl:[])
+				output = res_header + "###" + server_response
+
+				connection_state = "LOST"
+
+				client.puts output
+				client.close
 			end
 		end
 	end
 
-	write_file(file_name_out, payload)
+	File.write(file_name_out, payload)
 
 	s = TCPSocket.open(IP, PORT)
-	server_response = s.gets.chomp
+	puts "conectado ao node"
+	# server_response = s.gets.chop
+	# puts server_response
+	server_response = ""
+	while res = s.gets
+		puts res.chop
+		server_response << res.chop
+	end
+	puts server_response
 	s.close
 
-	current_seq = current_seq + 1
-	res_header = build_header(seq:current_seq.to_s, ack:nil, ctl:[])
-	file_lines = res_header << ')()()(' << server_response
+	output = server_response
 
-	client.puts file_lines
+	client.puts output
 	client.close
+
+	# write_file(file_name_out, payload)
+
+	# s = TCPSocket.open(IP, PORT)
+	# server_response = s.gets.chomp
+	# s.close
+
+	# current_seq = current_seq + 1
+	# res_header = build_header(seq:current_seq.to_s, ack:nil, ctl:[])
+	# file_lines = res_header << ')()()(' << server_response
+
+	# client.puts file_lines
+	# client.close
 }
