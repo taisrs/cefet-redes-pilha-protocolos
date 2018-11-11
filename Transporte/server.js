@@ -22,6 +22,7 @@ function service(socket) {
                         return console.error(err);
                     }
                     socket.write(list.join().replace(/,/g, ';'));
+                    socket.destroy();
                 });  // lê o conteúdo de um diretório
                 break;
             case 'get':
@@ -30,6 +31,7 @@ function service(socket) {
                         return console.error(err);
                     }
                     socket.write(file);
+                    socket.destroy();
                 }); // lê o conteudo de um arquivo
                 break;
             case 'put':
@@ -39,6 +41,7 @@ function service(socket) {
                         return console.error(err);
                     }
                     socket.write('Successfully uploaded.');
+                    socket.destroy();
                 }); // escreve um novo arquivo
                 break;
             default:

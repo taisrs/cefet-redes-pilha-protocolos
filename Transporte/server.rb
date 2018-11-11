@@ -52,20 +52,15 @@ current_ack = nil
 
 connection_state = "ESTABLISHED"
 
-loop {
+loop do
 
 	client = server.accept
-
-	#header = File.open(file_name_in, &:readline) ### AQUI ESTÁ UM PROBLEMA: NÃO É O CABEÇALHO EM UMA LINHA E O PAYLOAD EM OUTRA
-	#payload = File.readlines(file_name_in)[1..-1]
 
 	file_content = File.read(file_name_in)
 	header = file_content.split("###")[0]
 	payload = file_content.split("###")[1..-1].join('')
 
 	seq, ack, ctl = parse_header(header)
-
-	#connection_state = File.read('server_connection.tcp')
 
 	if connection_state != "ESTABLISHED"
 
@@ -88,12 +83,12 @@ loop {
 
 				File.write(file_name_out, payload)
 
-				s = TCPSocket.open(IP, PORT)
-				server_response = s.gets.chomp
-				s.close
+				socket = TCPSocket.open(IP, PORT)
+				response = socket.gets.chomp
+				socket.close
 
 				res_header = build_header(seq:current_seq.to_s, ack:nil, ctl:[])
-				output = res_header + "###" + server_response
+				output = res_header + "###" + response
 
 				connection_state = "LOST"
 
@@ -105,33 +100,10 @@ loop {
 
 	File.write(file_name_out, payload)
 
-	s = TCPSocket.open(IP, PORT)
-	puts "conectado ao node"
-	# server_response = s.gets.chop
-	# puts server_response
-	server_response = ""
-	while res = s.gets
-		puts res.chop
-		server_response << res.chop
-	end
-	puts server_response
-	s.close
+	socket = TCPSocket.open(IP, PORT)
+	response = socket.gets.chomp
+	socket.close
 
-	output = server_response
-
-	client.puts output
+	client.puts response
 	client.close
-
-	# write_file(file_name_out, payload)
-
-	# s = TCPSocket.open(IP, PORT)
-	# server_response = s.gets.chomp
-	# s.close
-
-	# current_seq = current_seq + 1
-	# res_header = build_header(seq:current_seq.to_s, ack:nil, ctl:[])
-	# file_lines = res_header << ')()()(' << server_response
-
-	# client.puts file_lines
-	# client.close
-}
+end

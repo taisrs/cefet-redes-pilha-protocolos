@@ -1,1 +1,1 @@
-client.js;client.sh;command.txt;downloads;filelist.txt;ftp.txt;ip.txt;node_modules;package-lock.json;package.json;server.js;server.sh;uploads
+client.js;client.sh;command.txt;downloads;filelist.txt;ftp.txt;node_modules;package-lock.json;package.json;server.js;server.sh;uploads
