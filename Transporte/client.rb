@@ -3,9 +3,6 @@
 ip = ARGV[0]
 file_name = ARGV[1]
 
-#file = File.open(file_name, 'r+')
-#request_lines = file.readlines
-#file.close
 file_content = File.read(file_name)
 
 
@@ -26,6 +23,7 @@ def build_header(seq:nil, ack:nil, ctl:[])
 	return header
 end
 
+
 def parse_header(header)
 
 	elements = header.split(">")
@@ -36,6 +34,7 @@ def parse_header(header)
 	return [seq, ack, ctl]
 end
 
+
 # escreve cada elemento de content_array como uma linha em file_name
 #aposto que nao vai usar mais; tais discorda
 def write_file(file_name, content_array)
@@ -45,7 +44,9 @@ def write_file(file_name, content_array)
 	output.close
 end
 
-#connection_state = File.read('client_connection.tcp')
+
+debug_file = 'debug.txt'
+
 connection_state = "LOST"
 
 current_seq = 100
@@ -61,33 +62,30 @@ while connection_state != "ESTABLISHED"
 	# executa script da camada física
 	response = `./client.sh #{ip} #{file_name}`
 
-	print response
-	connection_state = "ESTABLISHED"
+	File.write(debug_file, response, mode:'a')
 
-	# res_header = response.split(')()()(')[0]
-	# res_payload = response.split(')()()(')[1..-1]
-	#
-	# seq, ack, ctl = parse_header(res_header)
-	#
-	# if ctl.include? 'ACK'
-	# 	if ack.to_i == (current_seq + 1)
-	#
-	# 		current_seq = current_seq + 1
-	#
-	# 		if ctl.include? 'SYN'
-	#
-	# 			current_ack = seq.to_i + 1
-	#
-	# 			File.write('client_connection.tcp', 'ESTABLISHED')
-	# 			connection_state = 'ESTABLISHED'
-	# 		end
-	# 	end
-	# else
-	# 	header = build_header(seq:current_seq.to_s, ack:nil, ctl:['SYN'])
-	# 	file_lines = [header] + request_lines
-	#
-	# 	write_file(file_name, file_lines)
-	# end
+	# print response
+	# connection_state = "ESTABLISHED"
+
+	#response manipulation
+	res_header = response.split("###")[0]
+	res_payload = response.split("###")[1..-1].join('')
+
+	seq, ack, ctl = parse_header(res_header)
+
+	if ctl.include? 'ACK'
+		if ack.to_i == (current_seq + 1)
+
+			current_seq = current_seq + 1
+
+			if ctl.include? 'SYN'
+
+				current_ack = seq.to_i + 1
+
+				connection_state = 'ESTABLISHED'
+			end
+		end
+	end
 end
 
 # executa uma vez que a conexao esteja estabelecida
@@ -98,9 +96,11 @@ File.write(file_name, output)
 # executa script da camada física
 response = `./client.sh #{ip} #{file_name}`
 
+File.write(debug_file, response, mode:'a')
+
 #response manipulation
 res_header = response.split("###")[0]
-res_payload = response.split("###")[1..-1]
+res_payload = response.split("###")[1..-1].join('')
 
 # retorna via stdout a resposta
 print res_payload

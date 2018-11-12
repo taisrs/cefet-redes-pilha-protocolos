@@ -50,7 +50,9 @@ server = TCPServer.open(MYIP, MYPORT)
 current_seq = 300
 current_ack = nil
 
-connection_state = "ESTABLISHED"
+connection_state = "LOST"
+
+debug_file = 'debug.txt'
 
 loop do
 
@@ -64,7 +66,11 @@ loop do
 
 	if connection_state != "ESTABLISHED"
 
+		File.write(debug_file, "SERVER: connection not yet established", mode:'a')
+
 		if ctl.include? 'SYN'
+
+			File.write(debug_file, "SERVER: client request connection", mode:'a')
 
 			current_ack = seq.to_i + 1
 
@@ -77,6 +83,8 @@ loop do
 		elsif ctl.include? 'ACK'
 
 			if ack.to_i == (current_seq + 1)
+
+				File.write(debug_file, "SERVER: client acknowledging connection", mode:'a')
 
 				current_seq = current_seq + 1
 				connection_state = "ESTABLISHED"
@@ -96,14 +104,19 @@ loop do
 				client.close
 			end
 		end
+	else
+
+		File.write(debug_file, "SERVER: connection established, request service", mode:'a')
+		
+		File.write(file_name_out, payload)
+
+		socket = TCPSocket.open(IP, PORT)
+		response = socket.gets.chomp
+		socket.close
+
+		client.puts response
+		client.close
 	end
 
-	File.write(file_name_out, payload)
-
-	socket = TCPSocket.open(IP, PORT)
-	response = socket.gets.chomp
-	socket.close
-
-	client.puts response
-	client.close
+	
 end
