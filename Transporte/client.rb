@@ -6,19 +6,27 @@ file_name = ARGV[1]
 file_content = File.read(file_name)
 
 
-def build_header(seq:nil, ack:nil, ctl:[])
+def build_header(seq:nil, ack:nil, ctl:[], win:nil)
 
 	header = "<SEQ="
 	if seq != nil
 		header << seq
 	end
+
 	header << "><ACK="
 	if ack != nil
 		header << ack
 	end
+
 	header << "><CTL="
 	ctl.each { |flag| header << "#{flag},"}
-	header << ">\n"
+
+	header << "><WIN="
+	if win != nil
+		header << win
+	end
+
+	header << ">"
 
 	return header
 end
@@ -30,8 +38,14 @@ def parse_header(header)
 
 	seq = elements[0].split("=", 2)[1]
 	ack = elements[1].split("=", 2)[1]
-	ctl = elements[2].split("=")[1].split(',')
-	return [seq, ack, ctl]
+	ctl = elements[2].split("=")[1]
+		if ctl != nil
+			ctl = ctl.split(',')
+		else
+			ctl = []
+		end
+	win = elements[3].split("=", 2)[1]
+	return [seq, ack, ctl, win]
 end
 
 
@@ -49,38 +63,45 @@ debug_file = 'debug.txt'
 
 connection_state = "LOST"
 
-current_seq = 100
+current_seq = 100 + rand(200)
 current_ack = nil
 
+available_buffer = 3000
+
 #sabendo que a conexao nao esta estabelecida
-header = build_header(seq:current_seq.to_s, ack:nil, ctl:['SYN'])
+header = build_header(seq:current_seq.to_s, ack:nil, ctl:['SYN'], win:available_buffer.to_s)
 output = header + "###" + file_content
 File.write(file_name, output)
 
 while connection_state != "ESTABLISHED"
 
+	File.write(debug_file, "CLIENT: connection not yet established\n", mode:'a')
+
 	# executa script da camada física
 	response = `./client.sh #{ip} #{file_name}`
 
-	File.write(debug_file, response, mode:'a')
-
-	# print response
-	# connection_state = "ESTABLISHED"
-
-	#response manipulation
+	# manipulacao da resposta
 	res_header = response.split("###")[0]
 	res_payload = response.split("###")[1..-1].join('')
 
-	seq, ack, ctl = parse_header(res_header)
+	available_buffer -= res_payload.bytesize()
+
+	seq, ack, ctl, win = parse_header(res_header)
+
+	File.write(debug_file, "CLIENT: packet received\n\theader - #{res_header}\n\tpayload - #{res_payload}", mode:'a')
 
 	if ctl.include? 'ACK'
-		if ack.to_i == (current_seq + 1)
+		if ack.to_i == (current_seq + res_payload.bytesize())
 
-			current_seq = current_seq + 1
+			File.write(debug_file, "CLIENT: server acknowledging packet\n", mode:'a')
+
+			current_seq = current_seq + res_payload.bytesize()
 
 			if ctl.include? 'SYN'
 
-				current_ack = seq.to_i + 1
+				File.write(debug_file, "CLIENT: server requesting connection\n", mode:'a')
+
+				current_ack = seq.to_i + res_payload.bytesize()
 
 				connection_state = 'ESTABLISHED'
 			end
@@ -89,18 +110,28 @@ while connection_state != "ESTABLISHED"
 end
 
 # executa uma vez que a conexao esteja estabelecida
-header = build_header(seq:current_seq.to_s, ack:current_ack.to_s, ctl:['ACK'])
+header = build_header(seq:current_seq.to_s, ack:current_ack.to_s, ctl:['ACK'], win:available_buffer.to_s)
 output = header + "###" + file_content
 File.write(file_name, output)
 
 # executa script da camada física
 response = `./client.sh #{ip} #{file_name}`
 
-File.write(debug_file, response, mode:'a')
-
 #response manipulation
 res_header = response.split("###")[0]
 res_payload = response.split("###")[1..-1].join('')
+
+
+available_buffer -= res_payload.bytesize()
+
+File.write(debug_file, "CLIENT: packet received\n\theader - #{res_header}\n\tpayload - #{res_payload}", mode:'a')
+
+seq, ack, ctl, win = parse_header(res_header)
+current_ack = seq.to_i + "ok, thanks".bytesize()
+header = build_header(seq:current_seq.to_s, ack:current_ack.to_s, ctl:['ACK'], win:available_buffer.to_s)
+output = header + "###" + "ok, thanks"
+File.write(file_name, output)
+response = `./client.sh #{ip} #{file_name}`
 
 # retorna via stdout a resposta
 print res_payload
