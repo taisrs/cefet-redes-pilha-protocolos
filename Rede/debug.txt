@@ -1,0 +1,99 @@
+CLIENT: packet received
+	header - 
+
+	payload - CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=197><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+SERVER: packet received
+	header - <SEQ=197><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=415><ACK=202><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+<SEQ=415><ACK=202><CTL=SYN,ACK,><WIN=2990>ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=250><ACK=468><CTL=ACK,><WIN=2947>
+	payload - ls .
+SERVER: connection not yet established
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=200><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=345><ACK=205><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=206><ACK=351><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=350><ACK=><CTL=><WIN=2990>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;command.txt~;configPC.txt;datagram.txt;datagram.txt~;debug.txt;debug.txt~;downloads;filelist.txt;filelist.txt~;ftp.txt;ftp.txt~;gateway.py;gateway.sh;gatewayR.sh;ler.txt~;node_modules;package-lock.json;package.json;response.txt;response.txt~;segment.txt;segment.txt~;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt
+
+SERVER: packet received
+	header - <SEQ=206><ACK=360><CTL=ACK,><WIN=2569>
+	payload - ok, thanks
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=249><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=350><ACK=254><CTL=SYN,ACK,><WIN=2974>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=255><ACK=356><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=355><ACK=><CTL=><WIN=2969>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;response.txt;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt
+
+SERVER: packet received
+	header - <SEQ=255><ACK=365><CTL=ACK,><WIN=2666>
+	payload - ok, thanks
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=119><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=428><ACK=124><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=125><ACK=434><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=433><ACK=><CTL=><WIN=2990>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;response.txt;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt
+
+SERVER: packet received
+	header - <SEQ=125><ACK=443><CTL=ACK,><WIN=2666>
+	payload - ok, thanks

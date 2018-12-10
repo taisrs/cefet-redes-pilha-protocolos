@@ -1,0 +1,2 @@
+IPlibrary;IPlibrary.py;IPlibrary.pyc;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;response.txt;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt
+
