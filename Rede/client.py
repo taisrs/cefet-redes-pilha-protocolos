@@ -13,7 +13,7 @@ if arguments == 3: # chamada que o client.rb fara exemplo. Client.py 127.0.0.4 f
 	IP = sys.argv[1]
 	file_name = sys.argv[2]
 
-	file = open(file_name, "r") #escreve no offset o controle que foi feito pelo gateway
+	file = open(file_name, "r")
 	lines = file.readlines()
 	payload = ''
 	for content in lines:
@@ -26,18 +26,20 @@ if arguments == 3: # chamada que o client.rb fara exemplo. Client.py 127.0.0.4 f
 	file.write(output)
 	file.close()
 
-	# myISR = ip.complementoUm(MYIP, MYMASK) #a partir do ip e da mascara descobrir a rede
-	# IP = ip.ipMaskEntrada(IP)  #a partir da entrada descobrir o ip e a mascara.
-	# net = ip.complementoUm(ip.ipBin(IP), ip.netMask(IP)) # rede da entrada
+	destIp = IP.split('.')
+	myIp = MYIP.split('.')
+	mask = MYMASK.split('.')
 
-	# if(net == myISR): # compara se for igual manda para entrada caso for diferente manda para o gateway.
-	response = subprocess.Popen(['bash', 'client.sh', IP, file_name], stdout=subprocess.PIPE).communicate()[0]
+	myISR=""
+	net=""
+	for i in range(0,4):
+		myISR += str(int(myIp[i]) & int(mask[i]))
+		net += str(int(destIp[i]) & int(mask[i]))
 
-	# else:
-	# 	response = subprocess.Popen(['bash', 'client.sh', MYGATEWAY, file_name], stdout=subprocess.PIPE).communicate()[0]
+	if(net == myISR): # compara se for igual manda para entrada caso for diferente manda para o gateway.
+		response = subprocess.Popen(['bash', 'client.sh', IP, file_name], stdout=subprocess.PIPE).communicate()[0]
 
-	# file = open("response.txt","w")
-	# file.write(str(response))
-	# file.close()
+	else:
+		# response = subprocess.Popen(['bash', 'client.sh', MYGATEWAY, file_name], stdout=subprocess.PIPE).communicate()[0]
 
 	print response

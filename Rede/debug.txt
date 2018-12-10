@@ -97,3 +97,155 @@ CLIENT: packet received
 SERVER: packet received
 	header - <SEQ=125><ACK=443><CTL=ACK,><WIN=2666>
 	payload - ok, thanks
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=283><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=330><ACK=288><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=289><ACK=336><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=335><ACK=><CTL=><WIN=2990>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt
+
+SERVER: packet received
+	header - <SEQ=289><ACK=345><CTL=ACK,><WIN=2679>
+	payload - ok, thanks
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=285><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=305><ACK=290><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=291><ACK=311><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=310><ACK=><CTL=><WIN=2990>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;IPlibrary.py~;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt
+
+SERVER: packet received
+	header - <SEQ=291><ACK=320><CTL=ACK,><WIN=2665>
+	payload - ok, thanks
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=121><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=481><ACK=126><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=127><ACK=487><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=486><ACK=><CTL=><WIN=2990>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;IPlibrary.py~;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt;teste.txt
+
+SERVER: packet received
+	header - <SEQ=127><ACK=496><CTL=ACK,><WIN=2655>
+	payload - ok, thanks
+CLIENT: connection not yet established
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=120><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=376><ACK=125><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=126><ACK=382><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=381><ACK=><CTL=><WIN=2990>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;IPlibrary.py~;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt;teste.txt
+
+SERVER: packet received
+	header - <SEQ=126><ACK=391><CTL=ACK,><WIN=2655>
+	payload - ok, thanks
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=236><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=354><ACK=241><CTL=SYN,ACK,><WIN=2995>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=242><ACK=360><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=359><ACK=><CTL=><WIN=2990>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;IPlibrary.py~;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt;teste.txt
+
+SERVER: packet received
+	header - <SEQ=242><ACK=369><CTL=ACK,><WIN=2655>
+	payload - ok, thanks
+CLIENT: connection not yet established
+SERVER: packet received
+	header - <SEQ=297><ACK=><CTL=SYN,><WIN=3000>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client requesting connection
+CLIENT: packet received
+	header - <SEQ=359><ACK=302><CTL=SYN,ACK,><WIN=2974>
+	payload - ls .
+
+CLIENT: server acknowledging packet
+CLIENT: server requesting connection
+SERVER: packet received
+	header - <SEQ=303><ACK=365><CTL=ACK,><WIN=2994>
+	payload - ls .
+SERVER: connection not yet established
+SERVER: client acknowledging packet
+CLIENT: packet received
+	header - <SEQ=364><ACK=><CTL=><WIN=2969>
+	payload - IPlibrary;IPlibrary.py;IPlibrary.pyc;IPlibrary.py~;client.js;client.py;client.pyc;client.rb;client.sh;command.txt;configPC.txt;datagram.txt;debug.txt;downloads;filelist.txt;ftp.txt;gateway.py;gateway.sh;gatewayR.sh;node_modules;package-lock.json;package.json;segment.txt;server.js;server.py;server.rb;server.sh;tabelaRotasC.txt;teste.txt
+
+SERVER: packet received
+	header - <SEQ=303><ACK=374><CTL=ACK,><WIN=2655>
+	payload - ok, thanks
+CLIENT: connection not yet established
