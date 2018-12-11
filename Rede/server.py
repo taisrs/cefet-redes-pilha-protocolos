@@ -1,11 +1,22 @@
 import socket
+from collections import namedtuple
+iface = namedtuple("iface", "name ip mask gateway port physicalconn")
 
 MYPORT=3006
 PORT=3009
+HOST='localhost'
 
-HOST='127.0.0.1'
-MASK='255.255.255.0'
-GATEWAY='127.0.0.5'
+def getnet(ip, mask):
+	myIp = ip.split('.')
+	myMask = mask.split('.')
+	net=""
+	for i in range(0,4):
+		net += str(int(myIp[i]) & int(myMask[i]))
+	return net
+
+ifaces=[]
+for i in range(0,1):
+	ifaces.append(iface("eth0", "192.168.1.1", "255.255.255.0", "192.168.1.2", 3006, "localhost"))
 
 
 #cria sockets diferentes para receber clientes
@@ -19,9 +30,9 @@ client.listen(1)
 while True:
 	#recebe conexao, alguem tentou ligar com a porta determinada
 	conn, addr = client.accept()
-	#abre o segment.txt criado pela camada fisica.
+	#abre o datagram.txt criado pela camada fisica.
 	file=open("datagram.txt","r")
-	#le o segment.txt
+	#le o datagram.txt
 	lines=file.readlines()
 	payload=""
 	for i in lines:
@@ -40,26 +51,10 @@ while True:
 	file.write(payload)
 	file.close()
 
-	if (DESTINATION==HOST):
-		server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-		server.connect((HOST,PORT))
-		response=server.recv(4096)
-		server.close()
-		#aqui significa que ele recebeu corretamente.
-
-	# minhaRede=ip.complementoUm(HOST,MASK)
-	# entradaIP= ip.ipMaskEntrada(SOURCE)
-
-	# rede=ip.complementoUm(ip.ipBin(entradaIP[0]),ip.netMask(entradaIP[1]))
-
-	#isso aqui ta errado.
-	# file=open("segment.txt","r+")
-	# lines=file.readlines()
-	# nem_content="source adress:"+HOST+"|destination adress:"+SOURCE+"&&&"
-	# for i in lines:
-	# 	new_content+=i
-	# file.write(new_content)
-	# file.close()
+	server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+	server.connect((HOST,PORT))
+	response=server.recv(4096)
+	server.close()
 
 	conn.send(response)
 	conn.close()

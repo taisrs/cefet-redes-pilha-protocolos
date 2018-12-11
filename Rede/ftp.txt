@@ -1,1 +1,1 @@
-<SEQ=291><ACK=><CTL=SYN,><WIN=3000>###get datagram.txt
+Src:192.168.1.1|Dst:192.168.0.1##############################<SEQ=174><ACK=445><CTL=ACK,><WIN=2966>###ok, thanks

@@ -25,7 +25,7 @@ app.post('/fileuploadform', function (req, res) {
 
 			data = execSync(`cat ${newpath}`);
 			fs.writeFileSync('ftp.txt', `put ${name}:${data}`);
-			execSync('ruby client.rb 127.0.0.1 ftp.txt');
+			execSync('ruby client.rb 192.168.0.1 ftp.txt');
 
 			//============================================================================================
 			//===================================Aplicacao================================================
@@ -57,7 +57,7 @@ app.get('/filedownload/:file', function (req, res, next) {
 	console.log('Requisita a camada física o arquivo ' + file + ' e o salva em ./downloads');
 
 	fs.writeFileSync('ftp.txt', `get ${file}`);
-	response =  execSync('ruby client.rb 127.0.0.1 ftp.txt');
+	response =  execSync('ruby client.rb 192.168.0.1 ftp.txt');
 	fs.writeFileSync('./downloads/' + file, response);
 
 	//============================================================================================

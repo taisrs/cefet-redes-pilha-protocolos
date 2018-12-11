@@ -84,6 +84,8 @@ while connection_state != "ESTABLISHED"
 	res_header = response.split("###")[0]
 	res_payload = response.split("###")[1..-1].join('')
 
+	File.write(debug_file, "CLIENT: packet received\n\theader - #{res_header}\n\tpayload - #{res_payload}", mode:'a')
+
 	available_buffer -= res_payload.bytesize()
 
 	seq, ack, ctl, win = parse_header(res_header)

@@ -1,84 +1,47 @@
-#!/usr/bin/python3
-import sys
-import os
-import subprocess
 import socket
-import IPlibrary as ip
+from collections import namedtuple
+iface = namedtuple("iface", "name ip mask gateway port physicalconn")
 
-PORT=3010
-#numero de elementos.
-nm_arguments=len(sys.argv)
-if nm_arguments == 2:
-	file= open("tabelaRotasC.txt","a+")
-	lines = file.readlines()
-	for i in lines:
-		print i
-	while(True):
-		print "quer adicionar mais 1 elemento na tabela ? 1- sim ,0 - nao.\n Para sair deve ser recusado adicionar uma entrada na Tabela de Rotas"
-		while(True):
-			i=int(input())
-			if(i==0 or i==1):
-				break;
-		if(i==1):
-			print "adicionar ip-rede"
-			ipi=ip.inputIP()
-			print "adicionar Mask"
-			iMask= ip.inputMASK()
-			print "adionar ip gateway"
-			iG=ip.inputIP()
-			file.write(str(ipi)+" "+str(iMask) +" "+ str(iG))
-			file.close()
-		else:
-			break;
-elif nm_arguments==1:
-	file= open("tabelaRotasC.txt","r")
-	lines=file.readlines()
-	for line in lines: #chama as interfaces para ficar escutando
-		#os.system("gnome-terminal sh python gateway.py 1 "+ str(line.split(' ')[2]))
-		string = str(line.split(' ')[2])
-		print string
-		subprocess.check_output(["gnome-terminal",
-                        		 "sh","-x",
-                         		 "python", "gateway.py","1",string
-                        		])
-	print "2"
+MYPORT=5006
+PORT=3003
 
-elif nm_arguments==3:
-	file= open("tabelaRotasC.txt","r")
-	lines=file.readlines()
-	redeAndGateway=[]
-	for line in lines:
-		tup=line.split(' ')
-		redeAndGateway.append([ip.complementoUm( ip.ipBin(tup[0]),ip.ipBin(tup[1]) ),tup[2]])
-	HOST=sys.argv[2]
-	print str(HOST)
+def getnet(ip, mask):
+	myIp = ip.split('.')
+	myMask = mask.split('.')
+	net=""
+	for i in range(0,4):
+		net += str(int(myIp[i]) & int(myMask[i]))
+	return net
 
-	s= socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-	s.bind((HOST,PORT))
-	s.listen(1)
-	print "hey"
-	while True:
-		conn, addr = s.accept()
-		file=open("ler.txt","r")
-		lines=file.readlines()
-		for i in lines:
-			if "&&&" in i:
-				b=i.split("&&&")
-				a=i.split("&&&")[0].split('|')
-		#e=b[0].split(' ')[0]+' ###'+b[1]		
-		#file.write(e)
-		SOURCE=a[0].split(':')[1]
-		DESTINATION=a[1].split(':')[1] #deve ser esse codigo obviamente.
-		#tratar.
-		gatewayRetorno=None
-		for rg in redeAndGateway:
-			if(rg[0]==redeEntrada):
-				gatewayRetorno=rg[1]
-				break;
-		if(gatewayRetorno==None):
-			print "erro nao tem Gateway para enviar esse IP"
-		else:
-			os.system('./gatewayR.sh '+ IP_DESTINO +' '+ O_Q_ENVIA ) # tem que arrumar essa linha ainda.
-		#devolver
-		s.send()
-		conn.close()
+ifaces=[]
+for i in range(0,1):
+	ifaces.append(iface("eth0", "192.168.0.2", "255.255.255.0", "192.168.0.1", PORT, "localhost"))
+
+#cria sockets diferentes para receber clientes
+client = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
+#conecta o socket que liga com a camada fisica.
+client.bind(('localhost',MYPORT))
+client.listen(1)
+
+#While para ler dos sockets
+while True:
+	#recebe conexao, alguem tentou ligar com a porta determinada
+	conn, addr = client.accept()
+	#abre o segment.txt criado pela camada fisica.
+	file=open("package.txt","r")
+	#le o segment.txt
+	package=file.read()
+
+	DESTINATION = '192.168.0.1'
+
+	for iface in ifaces:
+		if getnet(iface.ip,iface.mask)==getnet(DESTINATION,iface.mask):
+			server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+			server.connect((iface.physicalconn,iface.port))
+			server.sendall(package)
+			response=server.recv(4096)
+			server.close()
+
+	conn.send(response)
+	conn.close()

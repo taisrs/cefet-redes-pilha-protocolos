@@ -3,7 +3,7 @@
 #define número da porta
 MYPORT=3003;
 #define número do IP
-MYIP="127.0.0.1";
+MYIP="localhost";
 #define número da porta do servidor da aplicação
 PORT=3006;
 

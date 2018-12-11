@@ -1,11 +1,24 @@
 import sys
 import os
 import subprocess
-import IPlibrary as ip
+from collections import namedtuple
+iface = namedtuple("iface", "name ip mask gateway physicalconn")
 
-MYIP = "127.0.0.3"
+MYIP = "192.168.1.1"
 MYMASK = "255.255.255.0"
-MYGATEWAY = "127.0.0.5"
+
+def getnet(ip, mask):
+	myIp = ip.split('.')
+	myMask = mask.split('.')
+	net=""
+	for i in range(0,4):
+		net += str(int(myIp[i]) & int(myMask[i]))
+	return net
+
+ifaces=[]
+for i in range(0,1):
+	ifaces.append(iface("eth0", "192.168.1.1", "255.255.255.0", "192.168.1.2", "localhost"))
+
 
 arguments = len(sys.argv)
 
@@ -26,20 +39,17 @@ if arguments == 3: # chamada que o client.rb fara exemplo. Client.py 127.0.0.4 f
 	file.write(output)
 	file.close()
 
-	destIp = IP.split('.')
-	myIp = MYIP.split('.')
-	mask = MYMASK.split('.')
+	net = getnet(IP,MYMASK)
+	v=0
+	for iface in ifaces:
+		if getnet(iface.ip,iface.mask)==net:
+			response = subprocess.Popen(['bash', 'client.sh', iface.physicalconn, file_name], stdout=subprocess.PIPE).communicate()[0]
+			v=1
+	if v==0: #send to default gateway
+			response = subprocess.Popen(['bash', 'client.sh', 'localhost', file_name], stdout=subprocess.PIPE).communicate()[0]
 
-	myISR=""
-	net=""
-	for i in range(0,4):
-		myISR += str(int(myIp[i]) & int(mask[i]))
-		net += str(int(destIp[i]) & int(mask[i]))
 
-	if(net == myISR): # compara se for igual manda para entrada caso for diferente manda para o gateway.
-		response = subprocess.Popen(['bash', 'client.sh', IP, file_name], stdout=subprocess.PIPE).communicate()[0]
 
-	else:
-		# response = subprocess.Popen(['bash', 'client.sh', MYGATEWAY, file_name], stdout=subprocess.PIPE).communicate()[0]
+
 
 	print response

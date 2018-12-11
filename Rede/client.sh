@@ -8,7 +8,7 @@ fi
 sleep 1;
 
 #define número da porta
-PORT=3003;
+PORT=5003;
 #carrega o payload
 payload=$(cat $2);
 #obtém MAC da máquina de origem

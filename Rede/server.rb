@@ -55,7 +55,7 @@ file_name_out = 'command.txt'
 
 # execucao do servidor
 MYPORT = 3009
-MYIP = '127.0.0.1'
+MYIP = 'localhost'
 PORT = 3012
 
 server = TCPServer.open(MYIP, MYPORT)

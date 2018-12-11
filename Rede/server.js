@@ -50,4 +50,4 @@ function service(socket) {
     });
 }
 
-server.listen(3012, '127.0.0.1');
+server.listen(3012, 'localhost');
